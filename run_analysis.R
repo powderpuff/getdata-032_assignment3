@@ -12,7 +12,7 @@ dt_test <- cbind(temp$V1, temp2$V1,dt_test)
 #combine train data and test data.
 dt<- rbind(dt_train, dt_test)
 #import colnames from features.txt and add subject and activity to the colnames.
-temp<-data.table(read.table("features.txt"))
+temp<-data.table(read.table("UCI HAR Dataset/features.txt"))
 colnames <- c("subject", "activity", as.character(temp$V2))
 #assign colnames to the combined test & training data
 setnames(dt,1:563, colnames)
@@ -28,6 +28,6 @@ dt$activity[dt$activity == 6] = "LAYING"
 #make a new data.table dt_avg which consists of avg value of the meansurement variables by subject and activity.
 dt_avg<-dt[,lapply(.SD, mean), by=c("subject","activity")]
 #change the colunmn names for dt_avg (except for subject and activity) by adding avg_ at the beginning of the column name.
-newcolnames <- sub("^", "avg_", colnames(b)[c(-1,-2)])
+newcolnames <- sub("^", "avg_", colnames(dt_avg)[c(-1,-2)])
 setnames(dt_avg, 3:68, newcolnames)
 write.table(dt_avg, file = "dt_avg.txt", row.names = FALSE)
